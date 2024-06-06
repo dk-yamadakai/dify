@@ -468,10 +468,28 @@ services:
       - api
       - web
     ports:
-      - "80:80"
+      #- "80:80"
+      - "8082:80"  # ホストの8082ポートをコンテナの80ポートにマッピング
       #- "443:443"
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    volumes:
+      - ./litellm/config.yaml:/app/config.yaml
+    environment:
+      AWS_REGION: us-east-1
+    expose:
+      - "4000"
+    command: ["--config", "/app/config.yaml"]
+
 networks:
   # create a network between sandbox, api and ssrf_proxy, and can not access outside.
   ssrf_proxy_network:
     driver: bridge
     internal: true
+
+
+
+
+
+    
